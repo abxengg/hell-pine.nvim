@@ -1,0 +1,17 @@
+# Hell Pine, generated from lua/hell-pine/palette.lua by scripts/extras.py
+# source-file /path/to/hell-pine.tmux   (in ~/.tmux.conf)
+set -g status-style "fg=#908caa,bg=default"
+set -g status-left-style "fg=#ebbcba,bold"
+set -g status-right-style "fg=#6e6a86"
+set -g window-status-style "fg=#6e6a86"
+set -g window-status-current-style "fg=#ebbcba,bold"
+set -g window-status-activity-style "fg=#ca9f7c"
+set -g window-status-bell-style "fg=#d16d92,bold"
+set -g pane-border-style "fg=#2c2e34"
+set -g pane-active-border-style "fg=#ebbcba"
+set -g message-style "fg=#e0def4,bg=#2c2e34"
+set -g message-command-style "fg=#e0def4,bg=#2c2e34"
+set -g mode-style "fg=#e0def4,bg=#393947"
+set -g display-panes-active-colour "#ebbcba"
+set -g display-panes-colour "#6e6a86"
+set -g clock-mode-colour "#ebbcba"

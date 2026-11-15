@@ -1,0 +1,17 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+      - name: The theme loads and has the VS Code theme's colours
+        run: nvim --headless -u NONE -l tests/smoke.lua
+      - name: The extras are made from the palette
+        run: python3 scripts/extras.py && git diff --exit-code extras

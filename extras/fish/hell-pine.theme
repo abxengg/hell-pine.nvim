@@ -1,0 +1,24 @@
+# name: 'Hell Pine'
+# Hell Pine, generated from lua/hell-pine/palette.lua by scripts/extras.py. Install: copy to ~/.config/fish/themes/, then: fish_config theme save "hell-pine"
+fish_color_normal e0def4
+fish_color_command ebbcba
+fish_color_keyword 658789
+fish_color_quote ca9f7c
+fish_color_redirection c4a7e7
+fish_color_end 908caa
+fish_color_error d16d92
+fish_color_param e0def4
+fish_color_option c4a7e7
+fish_color_comment 6e6a86 --italics
+fish_color_operator 908caa
+fish_color_escape ebbcba
+fish_color_autosuggestion 6e6a86
+fish_color_valid_path --underline
+fish_color_selection --background=393947
+fish_color_search_match --background=393947
+fish_color_history_current --bold
+fish_pager_color_progress 908caa
+fish_pager_color_prefix ebbcba --bold
+fish_pager_color_completion e0def4
+fish_pager_color_description 6e6a86
+fish_pager_color_selected_background --background=393947

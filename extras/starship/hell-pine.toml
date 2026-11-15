@@ -1,0 +1,20 @@
+# Hell Pine, generated from lua/hell-pine/palette.lua by scripts/extras.py
+# In starship.toml: palette = "hell_pine", then add this table. Styles can then say "bold rose", "foam" and so on.
+[palettes.hell_pine]
+text = "#e0def4"
+subtle = "#908caa"
+muted = "#6e6a86"
+love = "#d16d92"
+gold = "#ca9f7c"
+rose = "#ebbcba"
+pine = "#658789"
+foam = "#9ccfd8"
+iris = "#c4a7e7"
+overlay = "#2c2e34"
+base = "#16181d"
+red = "#d16d92"
+green = "#658789"
+yellow = "#ca9f7c"
+blue = "#9ccfd8"
+magenta = "#c4a7e7"
+cyan = "#ebbcba"
