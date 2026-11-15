@@ -1,23 +1,43 @@
-"""Writes the terminal and tool themes in extras/ from lua/hell-pine/palette.lua, so every app gets the same colours.
+"""Writes the Hell Pine ports for terminals and tools from lua/hell-pine/palette.lua, so every app gets the same
+colours. Each port is its own repository (abxengg/hell-pine-ghostty, hell-pine-wezterm, ...), cloned next to this one;
+the files go into those clones, to be committed there.
 
-    python3 scripts/extras.py
+    python3 scripts/extras.py [folder holding the clones; default: the folder holding this repository]
 """
-import json, os, re
+import json, os, re, stat, sys
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PORTS = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(HERE)
 c = dict(re.findall(r'(\w+)\s*=\s*"(#[0-9a-fA-F]{6})"', open(os.path.join(HERE, "lua/hell-pine/palette.lua")).read()))
 # The terminal's sixteen colours, as the VS Code theme sets them.
 ansi = [c["black"], c["love"], c["pine"], c["gold"], c["foam"], c["iris"], c["rose"], c["text"]]
 bright = [c["subtle"], c["love"], c["pine"], c["gold"], c["foam"], c["iris"], c["rose"], c["text"]]
 NAMES = ["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"]
-HEADER = "Hell Pine, generated from lua/hell-pine/palette.lua by scripts/extras.py"
+HEADER = "Hell Pine, made from the palette in https://github.com/abxengg/hell-pine.nvim by scripts/extras.py"
 
 
-def write(path, text):
-    full = os.path.join(HERE, "extras", path)
+# Where each tool's files go: its repository, and the name the tool expects.
+TARGET = {
+    "ghostty/hell-pine": "hell-pine-ghostty/hell-pine",
+    "wezterm/hell-pine.toml": "hell-pine-wezterm/hell-pine.toml",
+    "kitty/hell-pine.conf": "hell-pine-kitty/hell-pine.conf",
+    "alacritty/hell-pine.toml": "hell-pine-alacritty/hell-pine.toml",
+    "tmux/hell-pine.tmux": "hell-pine-tmux/hell-pine.conf",
+    "starship/hell-pine.toml": "hell-pine-starship/hell-pine.toml",
+    "btop/hell-pine.theme": "hell-pine-btop/hell-pine.theme",
+    "fish/hell-pine.theme": "hell-pine-fish/themes/hell-pine.theme",
+    "zed/hell-pine.json": "hell-pine-zed/themes/hell-pine.json",
+    "fzf/hell-pine.sh": "hell-pine-fzf/hell-pine.sh",
+}
+
+
+def write(path, text, executable=False):
+    full = os.path.join(PORTS, TARGET.get(path, path))
     os.makedirs(os.path.dirname(full), exist_ok=True)
     open(full, "w").write(text)
-    print("wrote extras/" + path)
+    if executable:
+        os.chmod(full, os.stat(full).st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+    print("wrote " + os.path.relpath(full, PORTS))
 
 
 write("ghostty/hell-pine", f"# {HEADER}\n" + "".join(f"palette = {i}={col}\n" for i, col in enumerate(ansi + bright)) + f"""background = {c['crust']}
@@ -79,7 +99,7 @@ background = "{c['hl_med']}"
 """ + "".join(f'{n} = "{x}"\n' for n, x in zip(NAMES, ansi)) + "\n[colors.bright]\n" + "".join(f'{n} = "{x}"\n' for n, x in zip(NAMES, bright)))
 
 write("tmux/hell-pine.tmux", f"""# {HEADER}
-# source-file /path/to/hell-pine.tmux   (in ~/.tmux.conf)
+# source-file /path/to/hell-pine.conf   (in ~/.tmux.conf), or use the repository as a TPM plugin
 set -g status-style "fg={c['subtle']},bg=default"
 set -g status-left-style "fg={c['rose']},bold"
 set -g status-right-style "fg={c['muted']}"
@@ -96,6 +116,11 @@ set -g display-panes-active-colour "{c['rose']}"
 set -g display-panes-colour "{c['muted']}"
 set -g clock-mode-colour "{c['rose']}"
 """)
+
+# The same settings as a TPM plugin: TPM runs every *.tmux file of a plugin.
+tmux_lines = [l for l in open(os.path.join(PORTS, TARGET["tmux/hell-pine.tmux"])).read().splitlines() if l.startswith("set ")]
+write("hell-pine-tmux/hell-pine.tmux", "#!/usr/bin/env bash\n# " + HEADER + "\n# With TPM: set -g @plugin 'abxengg/hell-pine-tmux'\n" +
+      "".join("tmux " + l + "\n" for l in tmux_lines), executable=True)
 
 write("starship/hell-pine.toml", f"""# {HEADER}
 # In starship.toml: palette = "hell_pine", then add this table. Styles can then say "bold rose", "foam" and so on.
@@ -183,4 +208,13 @@ write("zed/hell-pine.json", json.dumps(zed, indent=2) + "\n")
 write("fzf/hell-pine.sh", f"""# {HEADER}
 # In ~/.zshrc or ~/.bashrc: source this file, or copy the line.
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=fg:{c['subtle']},bg:-1,hl:{c['rose']},fg+:{c['text']},bg+:{c['inner']},hl+:{c['rose']},border:{c['overlay']},header:{c['foam']},gutter:-1,spinner:{c['gold']},info:{c['foam']},pointer:{c['iris']},marker:{c['love']},prompt:{c['subtle']}"
+""")
+
+write("hell-pine-zed/extension.toml", f"""id = "hell-pine"
+name = "Hell Pine"
+version = "1.0.0"
+schema_version = 1
+authors = ["ABX"]
+description = "A darker, higher-contrast take on Rosé Pine, born inside tmux."
+repository = "https://github.com/abxengg/hell-pine-zed"
 """)

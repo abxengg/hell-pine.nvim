@@ -13,5 +13,11 @@ jobs:
           version: stable
       - name: The theme loads and has the VS Code theme's colours
         run: nvim --headless -u NONE -l tests/smoke.lua
-      - name: The extras are made from the palette
-        run: python3 scripts/extras.py && git diff --exit-code extras
+      - name: Every port repository matches the palette
+        run: |
+          mkdir ports
+          for t in ghostty wezterm kitty alacritty tmux starship btop fish zed fzf; do
+            git clone -q --depth 1 https://github.com/abxengg/hell-pine-$t ports/hell-pine-$t
+          done
+          python3 scripts/extras.py ports
+          for t in ports/*; do git -C $t diff --exit-code || { echo "::error::$t is out of date: run scripts/extras.py and push it"; exit 1; }; done

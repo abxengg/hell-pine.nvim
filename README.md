@@ -5,8 +5,12 @@ port of the [Hell Pine VS Code theme](https://github.com/abxengg/hell-pine): the
 (keywords pine, types foam, functions rose, strings gold, parameters iris, errors love, comments muted and italic),
 and the same language-server colours.
 
-It also carries matching themes for your terminal and tools in [`extras/`](extras): Ghostty, WezTerm, kitty,
-Alacritty, tmux, Starship, btop, fish, Zed and fzf.
+Matching themes for your terminal and tools live in their own repositories, all made from this one palette: see
+[Other ports](#other-ports).
+
+![Hell Pine in Neovim, the terminal and tmux](assets/hero.png)
+
+![The Hell Pine palette](assets/palette.png)
 
 ## Install
 
@@ -55,28 +59,34 @@ Tree-sitter, language-server semantic tokens, diagnostics, and the plugins peopl
 which-key, lazy, mason, indent-blankline, nvim-tree, neo-tree, flash, fidget, noice, blink.cmp, nvim-cmp, mini,
 trouble and nvim-dap. The terminal inside Neovim gets the same sixteen colours.
 
-## Extras
+## Other ports
 
-| Tool | File | How |
-|---|---|---|
-| Ghostty | `extras/ghostty/hell-pine` | copy to `~/.config/ghostty/themes/hell-pine`, then `theme = hell-pine` |
-| WezTerm | `extras/wezterm/hell-pine.toml` | copy to `~/.config/wezterm/colors/`, then `config.color_scheme = "Hell Pine"` |
-| kitty | `extras/kitty/hell-pine.conf` | `include hell-pine.conf` in `kitty.conf` |
-| Alacritty | `extras/alacritty/hell-pine.toml` | `[general] import = ["…/hell-pine.toml"]` |
-| tmux | `extras/tmux/hell-pine.tmux` | `source-file …/hell-pine.tmux` in `~/.tmux.conf` |
-| Starship | `extras/starship/hell-pine.toml` | add the table to `starship.toml`, then `palette = "hell_pine"` |
-| btop | `extras/btop/hell-pine.theme` | copy to `~/.config/btop/themes/`, then `color_theme = "hell-pine"` |
-| fish | `extras/fish/hell-pine.theme` | copy to `~/.config/fish/themes/`, then `fish_config theme save hell-pine` |
-| Zed | `extras/zed/hell-pine.json` | copy to `~/.config/zed/themes/`, then pick Hell Pine |
-| fzf | `extras/fzf/hell-pine.sh` | source it in `~/.zshrc` or `~/.bashrc` |
+| Tool | Repository |
+|---|---|
+| VS Code | [abxengg/hell-pine](https://github.com/abxengg/hell-pine) |
+| Ghostty | [abxengg/hell-pine-ghostty](https://github.com/abxengg/hell-pine-ghostty) |
+| WezTerm | [abxengg/hell-pine-wezterm](https://github.com/abxengg/hell-pine-wezterm) |
+| kitty | [abxengg/hell-pine-kitty](https://github.com/abxengg/hell-pine-kitty) |
+| Alacritty | [abxengg/hell-pine-alacritty](https://github.com/abxengg/hell-pine-alacritty) |
+| tmux | [abxengg/hell-pine-tmux](https://github.com/abxengg/hell-pine-tmux) |
+| Starship | [abxengg/hell-pine-starship](https://github.com/abxengg/hell-pine-starship) |
+| btop | [abxengg/hell-pine-btop](https://github.com/abxengg/hell-pine-btop) |
+| fish | [abxengg/hell-pine-fish](https://github.com/abxengg/hell-pine-fish) |
+| Zed | [abxengg/hell-pine-zed](https://github.com/abxengg/hell-pine-zed) |
+| fzf | [abxengg/hell-pine-fzf](https://github.com/abxengg/hell-pine-fzf) |
 
-They are all made from `lua/hell-pine/palette.lua` by `python3 scripts/extras.py`; change the palette there and run
-it again.
+Each has its own install steps. They are all made from `lua/hell-pine/palette.lua` by `scripts/extras.py`, which
+writes into clones of those repositories sitting next to this one:
+
+```sh
+for t in ghostty wezterm kitty alacritty tmux starship btop fish zed fzf; do gh repo clone abxengg/hell-pine-$t ../hell-pine-$t; done
+python3 scripts/extras.py
+```
 
 ## Development
 
 `nvim --headless -u NONE -l tests/smoke.lua` loads the theme and checks its main colours against the VS Code
-theme. CI runs it on every push, and checks that `extras/` matches the palette.
+theme. CI runs it on every push, and checks that every port repository matches the palette.
 
 ## Licence
 

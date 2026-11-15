@@ -14,9 +14,7 @@ jobs:
           neovim: true
           version: stable
       - run: nvim --headless -u NONE -l tests/smoke.lua
-      - name: Attach the extras
-        run: |
-          tar czf hell-pine-extras.tar.gz extras
-          gh release create "$GITHUB_REF_NAME" hell-pine-extras.tar.gz --title "Hell Pine for Neovim $GITHUB_REF_NAME" --generate-notes
+      - name: Release
+        run: gh release create "$GITHUB_REF_NAME" --title "Hell Pine for Neovim $GITHUB_REF_NAME" --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
