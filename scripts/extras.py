@@ -179,3 +179,8 @@ for n, x, b in zip(NAMES, ansi, bright):
     zed["themes"][0]["style"][f"terminal.ansi.{n}"] = x
     zed["themes"][0]["style"][f"terminal.ansi.bright_{n}"] = b
 write("zed/hell-pine.json", json.dumps(zed, indent=2) + "\n")
+
+write("fzf/hell-pine.sh", f"""# {HEADER}
+# In ~/.zshrc or ~/.bashrc: source this file, or copy the line.
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=fg:{c['subtle']},bg:-1,hl:{c['rose']},fg+:{c['text']},bg+:{c['inner']},hl+:{c['rose']},border:{c['overlay']},header:{c['foam']},gutter:-1,spinner:{c['gold']},info:{c['foam']},pointer:{c['iris']},marker:{c['love']},prompt:{c['subtle']}"
+""")
